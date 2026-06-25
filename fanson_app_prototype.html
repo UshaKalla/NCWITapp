@@ -1,0 +1,375 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; }
+  .phone { width: 340px; margin: 0 auto; background: var(--color-background-secondary); border-radius: 32px; border: 0.5px solid var(--color-border-secondary); overflow: hidden; }
+  .status-bar { background: #1a1a2e; height: 28px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+  .status-bar span { color: #fff; font-size: 11px; font-weight: 500; }
+  .nav { background: #1a1a2e; padding: 10px 16px 8px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { color: #fff; font-size: 18px; font-weight: 500; letter-spacing: 1px; }
+  .nav-icons { display: flex; gap: 12px; }
+  .nav-icons i { color: rgba(255,255,255,0.8); font-size: 18px; }
+  .tab-bar { background: #1a1a2e; display: flex; border-top: 0.5px solid rgba(255,255,255,0.1); }
+  .tab { flex: 1; padding: 8px 4px; text-align: center; cursor: pointer; border: none; background: transparent; transition: all 0.2s; }
+  .tab span { display: block; font-size: 10px; margin-top: 2px; color: rgba(255,255,255,0.5); }
+  .tab i { font-size: 18px; color: rgba(255,255,255,0.5); }
+  .tab.active i, .tab.active span { color: #c8a97e; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .home-screen { background: var(--color-background-primary); }
+  .hero { background: linear-gradient(160deg, #1a1a2e 0%, #2d1b4e 100%); padding: 20px 16px 24px; }
+  .hero h2 { color: #fff; font-size: 20px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
+  .hero p { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.5; }
+  .input-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 16px; }
+  .mode-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .mode-card:hover { border-color: #c8a97e; }
+  .mode-card i { font-size: 22px; color: #c8a97e; display: block; margin-bottom: 6px; }
+  .mode-card span { font-size: 11px; color: var(--color-text-secondary); display: block; }
+  .mode-card .label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+  .recent { padding: 0 16px 16px; }
+  .section-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .recent-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .recent-card { border-radius: var(--border-radius-md); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+  .recent-img { height: 90px; display: flex; align-items: center; justify-content: center; background: var(--color-background-secondary); }
+  .recent-card p { font-size: 11px; color: var(--color-text-secondary); padding: 6px 8px; background: var(--color-background-primary); }
+
+  .draw-screen { background: var(--color-background-primary); }
+  .draw-header { padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: space-between; }
+  .draw-header h3 { font-size: 15px; font-weight: 500; }
+  .draw-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 0; height: 280px; }
+  .canvas-side { border-right: 0.5px solid var(--color-border-tertiary); position: relative; background: #fff; }
+  .canvas-label { position: absolute; top: 8px; left: 8px; font-size: 10px; color: var(--color-text-tertiary); background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; z-index: 2; }
+  .canvas-side canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
+  .gen-side { position: relative; background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .gen-label { position: absolute; top: 8px; left: 8px; font-size: 10px; color: var(--color-text-tertiary); background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; z-index: 2; }
+  .live-badge { position: absolute; top: 8px; right: 8px; background: #c8a97e; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; gap: 3px; z-index: 2; }
+  .live-dot { width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .gen-preview { width: 100%; height: 100%; object-fit: cover; }
+  .draw-tools { padding: 8px 16px; display: flex; align-items: center; gap: 8px; border-top: 0.5px solid var(--color-border-tertiary); border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+  .tool-btn { width: 32px; height: 32px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+  .tool-btn.active { background: #1a1a2e; border-color: #1a1a2e; }
+  .tool-btn.active i { color: #fff; }
+  .tool-btn i { font-size: 15px; color: var(--color-text-secondary); }
+  .color-dot { width: 18px; height: 18px; border-radius: 50%; border: 0.5px solid var(--color-border-secondary); cursor: pointer; }
+  .spacer { flex: 1; }
+  .search-btn { background: #c8a97e; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .search-btn i { font-size: 14px; }
+  .gen-status { padding: 8px 16px; background: var(--color-background-secondary); }
+  .gen-status p { font-size: 11px; color: var(--color-text-secondary); }
+  .progress-bar { height: 2px; background: var(--color-border-tertiary); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 65%; background: #c8a97e; border-radius: 2px; animation: progress 2s ease-in-out infinite alternate; }
+  @keyframes progress { from{width:30%} to{width:90%} }
+
+  .results-screen { background: var(--color-background-primary); }
+  .results-header { padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .results-header h3 { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .results-header p { font-size: 11px; color: var(--color-text-secondary); }
+  .strip { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--color-background-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); overflow-x: auto; }
+  .strip-item { flex-shrink: 0; text-align: center; }
+  .strip-img { width: 44px; height: 44px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .strip-label { font-size: 9px; color: var(--color-text-tertiary); margin-top: 3px; }
+  .arrow-icon { color: var(--color-text-tertiary); font-size: 14px; flex-shrink: 0; }
+  .results-list { padding: 10px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .result-card { display: flex; gap: 10px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 10px; background: var(--color-background-primary); cursor: pointer; }
+  .result-img { width: 64px; height: 80px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .result-info { flex: 1; }
+  .result-brand { font-size: 10px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+  .result-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 2px 0 4px; line-height: 1.3; }
+  .result-price { font-size: 14px; font-weight: 500; color: #c8a97e; }
+  .result-match { font-size: 10px; color: var(--color-text-success); background: var(--color-background-success); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+  .result-shop { width: 32px; height: 32px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: center; align-self: center; flex-shrink: 0; cursor: pointer; }
+  .result-shop i { font-size: 15px; color: var(--color-text-secondary); }
+</style>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span style="letter-spacing:1px">▐▐▐ ✦</span>
+  </div>
+  <div class="nav">
+    <div class="logo">FANSON</div>
+    <div class="nav-icons">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+      <i class="ti ti-user-circle" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div id="screen-home" class="screen active home-screen">
+    <div class="hero">
+      <h2>Find the outfit<br>in your memory</h2>
+      <p>Draw what you saw. We'll find where to buy it.</p>
+    </div>
+    <div class="input-modes">
+      <div class="mode-card" onclick="switchScreen('draw')">
+        <i class="ti ti-pencil" aria-hidden="true"></i>
+        <div class="label">Draw it</div>
+        <span>Sketch from memory</span>
+      </div>
+      <div class="mode-card">
+        <i class="ti ti-typography" aria-hidden="true"></i>
+        <div class="label">Describe it</div>
+        <span>Type what you saw</span>
+      </div>
+      <div class="mode-card">
+        <i class="ti ti-camera" aria-hidden="true"></i>
+        <div class="label">Photo it</div>
+        <span>Upload a picture</span>
+      </div>
+    </div>
+    <div class="recent">
+      <div class="section-title">Recent searches</div>
+      <div class="recent-grid">
+        <div class="recent-card">
+          <div class="recent-img">
+            <svg width="50" height="70" viewBox="0 0 50 70">
+              <path d="M25 5 L15 20 L5 18 L8 50 L42 50 L45 18 L35 20 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+              <path d="M15 20 Q25 28 35 20" fill="none" stroke="#888" stroke-width="1.5"/>
+              <rect x="8" y="50" width="34" height="18" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <p>Emerald green gown</p>
+        </div>
+        <div class="recent-card">
+          <div class="recent-img">
+            <svg width="50" height="70" viewBox="0 0 50 70">
+              <rect x="12" y="5" width="26" height="30" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+              <path d="M12 35 L8 65 L42 65 L38 35 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+              <path d="M12 5 L5 20" fill="none" stroke="#888" stroke-width="1.5"/>
+              <path d="M38 5 L45 20" fill="none" stroke="#888" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <p>White linen blazer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-draw" class="screen draw-screen">
+    <div class="draw-header">
+      <button onclick="switchScreen('home')" style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;color:var(--color-text-secondary);font-size:13px;">
+        <i class="ti ti-arrow-left" style="font-size:16px;" aria-hidden="true"></i> Back
+      </button>
+      <h3>Draw it</h3>
+      <button onclick="clearCanvas()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--color-text-secondary);">Clear</button>
+    </div>
+    <div class="draw-layout">
+      <div class="canvas-side">
+        <div class="canvas-label">Your sketch</div>
+        <canvas id="sketchCanvas" width="160" height="280"></canvas>
+      </div>
+      <div class="gen-side">
+        <div class="gen-label">AI render</div>
+        <div class="live-badge"><div class="live-dot"></div>Live</div>
+        <svg id="genPreview" width="160" height="280" viewBox="0 0 160 280" style="display:block;">
+          <rect width="160" height="280" fill="none"/>
+          <g id="dress-shape" opacity="0.15">
+            <path d="M80 30 L55 80 L30 75 L35 200 L125 200 L130 75 L105 80 Z" fill="#c8a97e"/>
+            <path d="M55 80 Q80 95 105 80" fill="none" stroke="#c8a97e" stroke-width="2"/>
+            <rect x="35" y="200" width="90" height="50" rx="3" fill="#c8a97e" opacity="0.5"/>
+          </g>
+          <text x="80" y="155" text-anchor="middle" font-size="11" fill="var(--color-text-tertiary)">Start drawing</text>
+          <text x="80" y="170" text-anchor="middle" font-size="11" fill="var(--color-text-tertiary)">to generate</text>
+        </svg>
+      </div>
+    </div>
+    <div class="draw-tools">
+      <div class="tool-btn active" id="btn-pen" onclick="setTool('pen')"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+      <div class="tool-btn" id="btn-eraser" onclick="setTool('eraser')"><i class="ti ti-eraser" aria-hidden="true"></i></div>
+      <div class="color-dot" style="background:#1a1a2e;" onclick="setColor('#1a1a2e')"></div>
+      <div class="color-dot" style="background:#c8a97e;" onclick="setColor('#c8a97e')"></div>
+      <div class="color-dot" style="background:#2d6a4f;" onclick="setColor('#2d6a4f')"></div>
+      <div class="spacer"></div>
+      <button class="search-btn" onclick="switchScreen('results')">
+        <i class="ti ti-search" aria-hidden="true"></i> Find it
+      </button>
+    </div>
+    <div class="gen-status">
+      <p>Generating in real time as you draw...</p>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen results-screen">
+    <div class="results-header">
+      <h3>Results</h3>
+      <p>23 matches found · sorted by similarity</p>
+    </div>
+    <div class="strip">
+      <div class="strip-item">
+        <div class="strip-img">
+          <svg width="40" height="44" viewBox="0 0 40 44">
+            <path d="M20 4 L12 16 L4 14 L6 38 L34 38 L36 14 L28 16 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+            <path d="M12 16 Q20 22 28 16" fill="none" stroke="#888" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="strip-label">Sketch</div>
+      </div>
+      <i class="ti ti-arrow-right arrow-icon" aria-hidden="true"></i>
+      <div class="strip-item">
+        <div class="strip-img" style="background:#e8f4e8;">
+          <svg width="40" height="44" viewBox="0 0 40 44">
+            <path d="M20 4 L12 16 L4 14 L6 38 L34 38 L36 14 L28 16 Z" fill="#2d6a4f" opacity="0.7"/>
+            <path d="M12 16 Q20 22 28 16" fill="none" stroke="#1a4a32" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="strip-label">AI render</div>
+      </div>
+      <i class="ti ti-arrow-right arrow-icon" aria-hidden="true"></i>
+      <div class="strip-item">
+        <div class="strip-img" style="background:#f0e8d8;">
+          <i class="ti ti-shopping-bag" style="font-size:20px;color:#c8a97e;" aria-hidden="true"></i>
+        </div>
+        <div class="strip-label">Shop</div>
+      </div>
+    </div>
+    <div class="results-list">
+      <div class="result-card">
+        <div class="result-img" style="background:#e8f4e8;">
+          <svg width="50" height="70" viewBox="0 0 50 70">
+            <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#2d6a4f" opacity="0.8"/>
+            <path d="M15 20 Q25 28 35 20" fill="none" stroke="#1a4a32" stroke-width="1.5"/>
+            <rect x="8" y="55" width="34" height="12" fill="#2d6a4f" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="result-info">
+          <div class="result-brand">ASOS</div>
+          <div class="result-name">Emerald A-line midi gown with boat neck</div>
+          <div class="result-price">$89</div>
+          <div class="result-match">94% match</div>
+        </div>
+        <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+      </div>
+      <div class="result-card">
+        <div class="result-img" style="background:#e8f0f4;">
+          <svg width="50" height="70" viewBox="0 0 50 70">
+            <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#1a5276" opacity="0.7"/>
+            <path d="M15 20 Q25 28 35 20" fill="none" stroke="#154360" stroke-width="1.5"/>
+            <rect x="8" y="55" width="34" height="12" fill="#1a5276" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="result-info">
+          <div class="result-brand">Nordstrom</div>
+          <div class="result-name">Structured sleeve A-line formal dress</div>
+          <div class="result-price">$124</div>
+          <div class="result-match">87% match</div>
+        </div>
+        <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+      </div>
+      <div class="result-card">
+        <div class="result-img" style="background:#f4e8f0;">
+          <svg width="50" height="70" viewBox="0 0 50 70">
+            <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#6c3483" opacity="0.7"/>
+            <path d="M15 20 Q25 28 35 20" fill="none" stroke="#512e5f" stroke-width="1.5"/>
+            <rect x="8" y="55" width="34" height="12" fill="#6c3483" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="result-info">
+          <div class="result-brand">Zara</div>
+          <div class="result-name">Draped mid-length occasion dress</div>
+          <div class="result-price">$69</div>
+          <div class="result-match">81% match</div>
+        </div>
+        <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" id="tab-home" onclick="switchScreen('home')" aria-label="Home">
+      <i class="ti ti-home" aria-hidden="true"></i>
+      <span>Home</span>
+    </button>
+    <button class="tab" id="tab-draw" onclick="switchScreen('draw')" aria-label="Draw">
+      <i class="ti ti-pencil" aria-hidden="true"></i>
+      <span>Draw</span>
+    </button>
+    <button class="tab" id="tab-results" onclick="switchScreen('results')" aria-label="Results">
+      <i class="ti ti-shopping-bag" aria-hidden="true"></i>
+      <span>Results</span>
+    </button>
+    <button class="tab" aria-label="Saved">
+      <i class="ti ti-heart" aria-hidden="true"></i>
+      <span>Saved</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  function switchScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    const tab = document.getElementById('tab-' + name);
+    if (tab) tab.classList.add('active');
+    if (name === 'draw') initCanvas();
+  }
+
+  let drawing = false, tool = 'pen', color = '#1a1a2e', ctx, strokes = 0;
+
+  function initCanvas() {
+    const canvas = document.getElementById('sketchCanvas');
+    if (canvas._init) return;
+    canvas._init = true;
+    ctx = canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    function getPos(e) {
+      const r = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / r.width;
+      const scaleY = canvas.height / r.height;
+      const src = e.touches ? e.touches[0] : e;
+      return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
+    }
+
+    function start(e) { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+    function move(e) {
+      e.preventDefault();
+      if (!drawing) return;
+      const p = getPos(e);
+      if (tool === 'eraser') { ctx.clearRect(p.x - 10, p.y - 10, 20, 20); }
+      else { ctx.strokeStyle = color; ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      strokes++;
+      if (strokes % 8 === 0) updateGen();
+    }
+    function end(e) { e.preventDefault(); drawing = false; }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    canvas.addEventListener('mouseup', end);
+    canvas.addEventListener('touchstart', start, { passive: false });
+    canvas.addEventListener('touchmove', move, { passive: false });
+    canvas.addEventListener('touchend', end, { passive: false });
+  }
+
+  function updateGen() {
+    const svg = document.getElementById('genPreview');
+    const shape = document.getElementById('dress-shape');
+    const opacity = Math.min(0.15 + strokes * 0.01, 0.9);
+    shape.setAttribute('opacity', opacity.toFixed(2));
+    const texts = svg.querySelectorAll('text');
+    if (opacity > 0.4) texts.forEach(t => t.style.display = 'none');
+  }
+
+  function setTool(t) {
+    tool = t;
+    document.getElementById('btn-pen').classList.toggle('active', t === 'pen');
+    document.getElementById('btn-eraser').classList.toggle('active', t === 'eraser');
+  }
+
+  function setColor(c) { color = c; }
+
+  function clearCanvas() {
+    const canvas = document.getElementById('sketchCanvas');
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strokes = 0;
+    const shape = document.getElementById('dress-shape');
+    shape.setAttribute('opacity', '0.15');
+    const svg = document.getElementById('genPreview');
+    svg.querySelectorAll('text').forEach(t => t.style.display = '');
+  }
+</script>
