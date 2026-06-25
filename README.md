@@ -1,4 +1,5 @@
-Story:
+#Story:
+
 One night, while mindlessly scrolling through Instagram reels in bed, you see an outfit that catches your attention. A woman stepped into the frame wearing a mid-length gown. It had a beautifully draped boat neck, structured three-quarter sleeves, and a subtle A-line silhouette that moved like liquid silk. It was exactly what you had been picturing in her mind for months.
 You pause, mesmerized by how perfect it was, intending to tap the save icon, but then your phone buzzes with an incoming text. By the time you reply and tap back into Instagram, your feed has automatically refreshed.
 For the past forty-eight hours, you had been thinking about that dress. You try searching "emerald green boat neck mid-length wedding guest dress" on Google, but the results were a sea of endless, generic options that looked nothing like the masterpiece you had seen.
