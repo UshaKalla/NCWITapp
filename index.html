@@ -1,147 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <link rel="stylesheet" href="style.css">
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fanson Prototype</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="phone">
-        <div class="status-bar">
-            <span>9:41</span>
-            <span style="letter-spacing:1px">▐▐▐ ✦</span>
-        </div>
 
-        <div class="nav">
-            <div class="logo">Flashion</div>
-            <div class="nav-icons">
-                <i class="ti ti-bell"></i
-                <i class="ti ti-user-circle"></i>
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span style="letter-spacing:1px">▐▐▐ ✦</span>
+  </div>
+
+  <div class="nav">
+    <div class="logo">FANSON</div>
+    <div class="nav-icons">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+      <i class="ti ti-user-circle" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="screen-container">
+    
+    <div id="screen-home" class="screen active">
+      <div class="hero">
+        <h2>Find the outfit<br>in your memory</h2>
+        <p>Draw what you saw. We'll find where to buy it.</p>
+      </div>
+      <div class="input-modes">
+        <div class="mode-card" onclick="switchScreen('draw')">
+          <i class="ti ti-pencil" aria-hidden="true"></i>
+          <div class="label">Draw it</div>
+          <span>Sketch from memory</span>
+        </div>
+        <div class="mode-card">
+          <i class="ti ti-typography" aria-hidden="true"></i>
+          <div class="label">Describe it</div>
+          <span>Type what you saw</span>
+        </div>
+        <div class="mode-card">
+          <i class="ti ti-camera" aria-hidden="true"></i>
+          <div class="label">Photo it</div>
+          <span>Upload a picture</span>
+        </div>
+      </div>
+      <div class="recent">
+        <div class="section-title">Recent searches</div>
+        <div class="recent-grid">
+          <div class="recent-card">
+            <div class="recent-img">
+              <svg width="60" height="80" viewBox="0 0 50 70">
+                <path d="M25 5 L15 20 L5 18 L8 50 L42 50 L45 18 L35 20 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+                <path d="M15 20 Q25 28 35 20" fill="none" stroke="#888" stroke-width="1.5"/>
+                <rect x="8" y="50" width="34" height="18" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+              </svg>
             </div>
+            <p>Emerald green gown</p>
+          </div>
+          <div class="recent-card">
+            <div class="recent-img">
+              <svg width="60" height="80" viewBox="0 0 50 70">
+                <rect x="12" y="5" width="26" height="30" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+                <path d="M12 35 L8 65 L42 65 L38 35 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+                <path d="M12 5 L5 20" fill="none" stroke="#888" stroke-width="1.5"/>
+                <path d="M38 5 L45 20" fill="none" stroke="#888" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <p>White linen blazer</p>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="screen-container">
-            <div id="screen-home" class="screen active">
-  
-  <div class="hero">
-    <h2>Find the outfit<br>in your memory</h2>
-    <p>Draw what you saw. We'll find where to buy it.</p>
-  </div>
-  
-  <div class="input-modes">
-    <div class="mode-card" onclick="switchScreen('draw')">
-      <i class="ti ti-pencil"></i>
-      <div class="label">Draw it</div>
-      <span>Sketch from memory</span>
-    </div>
-    
-    <div class="mode-card">
-      <i class="ti ti-typography"></i>
-      <div class="label">Describe it</div>
-      <span>Type what you saw</span>
-    </div>
-    
-    <div class="mode-card">
-      <i class="ti ti-camera"></i>
-      <div class="label">Photo it</div>
-      <span>Upload a picture</span>
-    </div>
-  </div>
-  
-  <div class="recent">
-    <div class="section-title">Recent searches</div>
-    <div class="recent-grid">
-      
-      <div class="recent-card">
-        <div class="recent-img">
-          <svg width="60" height="80" viewBox="0 0 50 70">
-            <path d="M25 5 L15 20 L5 18 L8 50 L42 50 L45 18 L35 20 Z" fill="none" stroke="#888" stroke-width="1.5"/>
-            <path d="M15 20 Q25 28 35 20" fill="none" stroke="#888" stroke-width="1.5"/>
-            <rect x="8" y="50" width="34" height="18" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+    <div id="screen-draw" class="screen">
+      <div class="draw-header">
+        <button onclick="switchScreen('home')" class="back-text-btn">
+          <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+        </button>
+        <h3>Draw it</h3>
+        <button onclick="clearCanvas()" class="clear-text-btn">Clear</button>
+      </div>
+      <div class="draw-layout">
+        <div class="canvas-side">
+          <div class="canvas-label">Your sketch</div>
+          <canvas id="sketchCanvas"></canvas>
+        </div>
+        <div class="gen-side">
+          <div class="gen-label">AI render</div>
+          <div class="live-badge"><div class="live-dot"></div>Live</div>
+          <svg id="genPreview" width="100%" height="100%" viewBox="0 0 160 280">
+            <rect width="160" height="280" fill="none"/>
+            <g id="dress-shape" opacity="0.15">
+              <path d="M80 30 L55 80 L30 75 L35 200 L125 200 L130 75 L105 80 Z" fill="#2d6a4f"/>
+              <path d="M55 80 Q80 95 105 80" fill="none" stroke="#2d6a4f" stroke-width="2"/>
+              <rect x="35" y="200" width="90" height="50" rx="3" fill="#2d6a4f" opacity="0.5"/>
+            </g>
+            <text x="80" y="145" text-anchor="middle" class="preview-text">Start drawing</text>
+            <text x="80" y="160" text-anchor="middle" class="preview-text">to generate</text>
           </svg>
         </div>
-        <p>Emerald green gown</p>
       </div>
+      <div class="draw-tools">
+        <div class="tool-btn active" id="btn-pen" onclick="setTool('pen')"><i class="ti ti-pencil" aria-hidden="true"></i></div>
+        <div class="tool-btn" id="btn-eraser" onclick="setTool('eraser')"><i class="ti ti-eraser" aria-hidden="true"></i></div>
+        <div class="color-dot dark-blue" onclick="setColor('#1a1a2e')"></div>
+        <div class="color-dot gold" onclick="setColor('#c8a97e')"></div>
+        <div class="color-dot green" onclick="setColor('#2d6a4f')"></div>
+        <div class="spacer"></div>
+        <button class="search-btn" onclick="switchScreen('results')">
+          <i class="ti ti-search" aria-hidden="true"></i> Find it
+        </button>
+      </div>
+      <div class="gen-status">
+        <p>Generating in real time as you draw...</p>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </div>
+    </div>
 
-      <div class="recent-card">
-        <div class="recent-img">
-          <svg width="60" height="80" viewBox="0 0 50 70">
-            <rect x="12" y="5" width="26" height="30" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
-            <path d="M12 35 L8 65 L42 65 L38 35 Z" fill="none" stroke="#888" stroke-width="1.5"/>
-            <path d="M12 5 L5 20" fill="none" stroke="#888" stroke-width="1.5"/>
-            <path d="M38 5 L45 20" fill="none" stroke="#888" stroke-width="1.5"/>
-          </svg>
+    <div id="screen-results" class="screen">
+      <div class="results-header">
+        <h3>Results</h3>
+        <p>23 matches found · sorted by similarity</p>
+      </div>
+      <div class="strip">
+        <div class="strip-item">
+          <div class="strip-img">
+            <svg width="40" height="44" viewBox="0 0 40 44">
+              <path d="M20 4 L12 16 L4 14 L6 38 L34 38 L36 14 L28 16 Z" fill="none" stroke="#888" stroke-width="1.5"/>
+              <path d="M12 16 Q20 22 28 16" fill="none" stroke="#888" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="strip-label">Sketch</div>
         </div>
-        <p>White linen blazer</p>
+        <i class="ti ti-arrow-right arrow-icon" aria-hidden="true"></i>
+        <div class="strip-item">
+          <div class="strip-img" style="background:#e8f4e8;">
+            <svg width="40" height="44" viewBox="0 0 40 44">
+              <path d="M20 4 L12 16 L4 14 L6 38 L34 38 L36 14 L28 16 Z" fill="#2d6a4f" opacity="0.7"/>
+              <path d="M12 16 Q20 22 28 16" fill="none" stroke="#1a4a32" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="strip-label">AI render</div>
+        </div>
+        <i class="ti ti-arrow-right arrow-icon" aria-hidden="true"></i>
+        <div class="strip-item">
+          <div class="strip-img" style="background:#f0e8d8;">
+            <i class="ti ti-shopping-bag" style="font-size:24px;color:#c8a97e;" aria-hidden="true"></i>
+          </div>
+          <div class="strip-label">Shop</div>
+        </div>
       </div>
-      <div id="screen-draw" class="screen">
-  
-  <div class="draw-header">
-    <button onclick="switchScreen('home')" class="back-btn">
-      <i class="ti ti-arrow-left"></i> Back
-    </button>
-    <h3>Draw it</h3>
-    <button onclick="clearCanvas()" class="clear-btn">Clear</button>
-  </div>
-  
-  <div class="draw-layout">
-    
-    <div class="canvas-side">
-      <div class="canvas-label">Your sketch</div>
-      <canvas id="sketchCanvas"></canvas>
+      <div class="results-list">
+        <div class="result-card">
+          <div class="result-img" style="background:#e8f4e8;">
+            <svg width="50" height="70" viewBox="0 0 50 70">
+              <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#2d6a4f" opacity="0.8"/>
+              <path d="M15 20 Q25 28 35 20" fill="none" stroke="#1a4a32" stroke-width="1.5"/>
+              <rect x="8" y="55" width="34" height="12" fill="#2d6a4f" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="result-info">
+            <div class="result-brand">ASOS</div>
+            <div class="result-name">Emerald A-line midi gown with boat neck</div>
+            <div class="result-price">$89</div>
+            <div class="result-match">94% match</div>
+          </div>
+          <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+        </div>
+        <div class="result-card">
+          <div class="result-img" style="background:#e8f0f4;">
+            <svg width="50" height="70" viewBox="0 0 50 70">
+              <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#1a5276" opacity="0.7"/>
+              <path d="M15 20 Q25 28 35 20" fill="none" stroke="#154360" stroke-width="1.5"/>
+              <rect x="8" y="55" width="34" height="12" fill="#1a5276" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="result-info">
+            <div class="result-brand">Nordstrom</div>
+            <div class="result-name">Structured sleeve A-line formal dress</div>
+            <div class="result-price">$124</div>
+            <div class="result-match">87% match</div>
+          </div>
+          <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+        </div>
+        <div class="result-card">
+          <div class="result-img" style="background:#f4e8f0;">
+            <svg width="50" height="70" viewBox="0 0 50 70">
+              <path d="M25 5 L15 20 L5 18 L8 55 L42 55 L45 18 L35 20 Z" fill="#6c3483" opacity="0.7"/>
+              <path d="M15 20 Q25 28 35 20" fill="none" stroke="#512e5f" stroke-width="1.5"/>
+              <rect x="8" y="55" width="34" height="12" fill="#6c3483" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="result-info">
+            <div class="result-brand">Zara</div>
+            <div class="result-name">Draped mid-length occasion dress</div>
+            <div class="result-price">$69</div>
+            <div class="result-match">81% match</div>
+          </div>
+          <div class="result-shop"><i class="ti ti-external-link" aria-hidden="true"></i></div>
+        </div>
+      </div>
     </div>
-    
-    <div class="gen-side">
-      <div class="gen-label">AI render</div>
-      <div class="live-badge"><div class="live-dot"></div>Live</div>
-      
-      <svg id="genPreview" width="100%" height="100%" viewBox="0 0 160 280">
-        <rect width="160" height="280" fill="none"/>
-        <g id="dress-shape" opacity="0.15">
-          <path d="M80 30 L55 80 L30 75 L35 200 L125 200 L130 75 L105 80 Z" fill="#2d6a4f"/>
-          <path d="M55 80 Q80 95 105 80" fill="none" stroke="#2d6a4f" stroke-width="2"/>
-          <rect x="35" y="200" width="90" height="50" rx="3" fill="#2d6a4f" opacity="0.5"/>
-        </g>
-        <text x="80" y="145" text-anchor="middle" class="preview-text">Start drawing</text>
-        <text x="80" y="160" text-anchor="middle" class="preview-text">to generate</text>
-      </svg>
-    </div>
-
-  </div>
-  
-  <div class="draw-tools">
-    <div class="tool-btn active" id="btn-pen" onclick="setTool('pen')"><i class="ti ti-pencil"></i></div>
-    <div class="tool-btn" id="btn-eraser" onclick="setTool('eraser')"><i class="ti ti-eraser"></i></div>
-    
-    <div class="color-dot dark-blue" onclick="setColor('#1a1a2e')"></div>
-    <div class="color-dot gold" onclick="setColor('#c8a97e')"></div>
-    <div class="color-dot green" onclick="setColor('#2d6a4f')"></div>
-    
-    <div class="spacer"></div>
-    
-    <button class="search-btn" onclick="switchScreen('results')">
-      <i class="ti ti-search"></i> Find it
-    </button>
-  </div>
-  
-  <div class="gen-status">
-    <p>Generating in real time as you draw...</p>
-    <div class="progress-bar"><div class="progress-fill"></div></div>
   </div>
 
+  <div class="tab-bar">
+    <button class="tab active" id="tab-home" onclick="switchScreen('home')" aria-label="Home">
+      <i class="ti ti-home" aria-hidden="true"></i>
+      <span>Home</span>
+    </button>
+    <button class="tab" id="tab-draw" onclick="switchScreen('draw')" aria-label="Draw">
+      <i class="ti ti-pencil" aria-hidden="true"></i>
+      <span>Draw</span>
+    </button>
+    <button class="tab" id="tab-results" onclick="switchScreen('results')" aria-label="Results">
+      <i class="ti ti-shopping-bag" aria-hidden="true"></i>
+      <span>Results</span>
+    </button>
+    <button class="tab" aria-label="Saved">
+      <i class="ti ti-heart" aria-hidden="true"></i>
+      <span>Saved</span>
+    </button>
+  </div>
 </div>
 
-    </div>
-  </div>
-
-</div>
-            </div>
-        <div class="tab-bar">
-            </div>
-    
-    </div>
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
