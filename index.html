@@ -76,6 +76,62 @@
         </div>
         <p>White linen blazer</p>
       </div>
+      <div id="screen-draw" class="screen">
+  
+  <div class="draw-header">
+    <button onclick="switchScreen('home')" class="back-btn">
+      <i class="ti ti-arrow-left"></i> Back
+    </button>
+    <h3>Draw it</h3>
+    <button onclick="clearCanvas()" class="clear-btn">Clear</button>
+  </div>
+  
+  <div class="draw-layout">
+    
+    <div class="canvas-side">
+      <div class="canvas-label">Your sketch</div>
+      <canvas id="sketchCanvas"></canvas>
+    </div>
+    
+    <div class="gen-side">
+      <div class="gen-label">AI render</div>
+      <div class="live-badge"><div class="live-dot"></div>Live</div>
+      
+      <svg id="genPreview" width="100%" height="100%" viewBox="0 0 160 280">
+        <rect width="160" height="280" fill="none"/>
+        <g id="dress-shape" opacity="0.15">
+          <path d="M80 30 L55 80 L30 75 L35 200 L125 200 L130 75 L105 80 Z" fill="#2d6a4f"/>
+          <path d="M55 80 Q80 95 105 80" fill="none" stroke="#2d6a4f" stroke-width="2"/>
+          <rect x="35" y="200" width="90" height="50" rx="3" fill="#2d6a4f" opacity="0.5"/>
+        </g>
+        <text x="80" y="145" text-anchor="middle" class="preview-text">Start drawing</text>
+        <text x="80" y="160" text-anchor="middle" class="preview-text">to generate</text>
+      </svg>
+    </div>
+
+  </div>
+  
+  <div class="draw-tools">
+    <div class="tool-btn active" id="btn-pen" onclick="setTool('pen')"><i class="ti ti-pencil"></i></div>
+    <div class="tool-btn" id="btn-eraser" onclick="setTool('eraser')"><i class="ti ti-eraser"></i></div>
+    
+    <div class="color-dot dark-blue" onclick="setColor('#1a1a2e')"></div>
+    <div class="color-dot gold" onclick="setColor('#c8a97e')"></div>
+    <div class="color-dot green" onclick="setColor('#2d6a4f')"></div>
+    
+    <div class="spacer"></div>
+    
+    <button class="search-btn" onclick="switchScreen('results')">
+      <i class="ti ti-search"></i> Find it
+    </button>
+  </div>
+  
+  <div class="gen-status">
+    <p>Generating in real time as you draw...</p>
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+  </div>
+
+</div>
 
     </div>
   </div>
